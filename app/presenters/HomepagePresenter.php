@@ -6,9 +6,25 @@
 class HomepagePresenter extends BasePresenter
 {
 
+
+	/**
+	 * @var TaskList\Tasks
+	 */
+	private $tasks;
+
+
+
+	protected function startup()
+	{
+		parent::startup();
+		$this->tasks = $this->context->tasks;
+	}
+
+
+
 	public function renderDefault()
 	{
-		$this->template->anyVariable = 'any value';
+		$this->template->tasks = $this->tasks->findIncomplete();
 	}
 
 }

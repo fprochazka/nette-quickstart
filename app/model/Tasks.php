@@ -17,4 +17,14 @@ class Tasks extends Table
 	 */
 	protected $tableName = 'task';
 
+
+
+	/**
+	 * @return \Nette\Database\Table\Selection
+	 */
+	public function findIncomplete()
+	{
+		return $this->findBy(array('done' => false))->order('created ASC');
+	}
+
 }

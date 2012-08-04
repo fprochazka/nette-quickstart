@@ -1,11 +1,3 @@
-{**
- * My Application layout template.
- *
- * @param string   $basePath web base path
- * @param string   $robots   tell robots how to index the content of a page (optional)
- * @param array    $flashes  flash messages
- *}
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,10 +6,9 @@
 	<meta name="description" content="Nette Framework web application skeleton">
 	<meta name="robots" content="{$robots}" n:ifset="$robots">
 
-	<title>{block title|striptags|upper}Nette Application Skeleton{/block}</title>
+    <title>{block title|stripTags|strip}Úkolníček{/block}</title>
 
-	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/screen.css" type="text/css">
-	<link rel="stylesheet" media="print" href="{$basePath}/css/print.css" type="text/css">
+    <link rel="stylesheet" href="{$basePath}/css/tasklist.css" type="text/css">
 	<link rel="shortcut icon" href="{$basePath}/favicon.ico" type="image/x-icon">
 
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
@@ -26,10 +17,30 @@
 </head>
 
 <body>
-	<script> document.body.className+=' js' </script>
+<div id="header">
+    <div id="header-inner">
+        <div class="title"><a href="{link Homepage:}">Úkolníček</a></div>
+    </div>
+</div>
 
-	<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
+<div id="container">
+    <div id="sidebar">
+        <div class="task-lists">
+            <ul n:inner-foreach="$taskLists as $list">
+                <li><a n:href="Task: $list->id">{$list->title}</a></li>
+            </ul>
+        </div>
+    </div>
 
-	{include #content}
+    <div id="content">
+        <div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
+
+    {include #content}
+    </div>
+
+    <div id="footer">
+
+    </div>
+</div>
 </body>
 </html>
