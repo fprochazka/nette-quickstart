@@ -12,17 +12,18 @@ use Nette\Security as NS;
  */
 class Authenticator extends Nette\Object implements NS\IAuthenticator
 {
+
 	/**
-	 * @var Nette\Database\Connection
+	 * @var Users
 	 */
 	private $users;
 
 
 
 	/**
-	 * @param \Nette\Database\Connection $users
+	 * @param Users $users
 	 */
-	public function __construct(Nette\Database\Connection $users)
+	public function __construct(Users $users)
 	{
 		$this->users = $users;
 	}
