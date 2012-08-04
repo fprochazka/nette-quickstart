@@ -30,10 +30,16 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	public function beforeRender()
 	{
 		$this->template->taskLists = $this->taskLists->findAll()->order('title ASC');
+		if ($this->isAjax()) {
+			$this->invalidateControl('flashMessages');
+		}
 	}
 
 
 
+	/**
+	 * @return Nette\Application\UI\Form
+	 */
 	protected function createComponentNewTasklistForm()
 	{
 		if (!$this->getUser()->isLoggedIn()) {
@@ -52,6 +58,9 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
 
 
+	/**
+	 * @param Nette\Application\UI\Form $form
+	 */
 	public function newTasklistFormSubmitted(Form $form)
 	{
 		$tasklist = $this->taskLists->createList($form->values->title);

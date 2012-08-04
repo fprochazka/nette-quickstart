@@ -66,6 +66,9 @@ class TaskPresenter extends BasePresenter
 
 
 
+	/**
+	 * @return TaskList\TaskListControl
+	 */
 	protected function createComponentTaskList()
 	{
 		if ($this->list === NULL) {
@@ -107,7 +110,13 @@ class TaskPresenter extends BasePresenter
 	{
 		$this->tasks->createTask($this->list->id, $form->values->text, $form->values->userId);
 		$this->flashMessage('Úkol přidán.', 'success');
-		$this->redirect('this');
+		if (!$this->isAjax()) {
+			$this->redirect('this');
+		}
+
+		$form->setValues(array('userId' => $form->values->userId), TRUE);
+		$this->invalidateControl('form');
+		$this['taskList']->invalidateControl();
 	}
 
 }

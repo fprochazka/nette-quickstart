@@ -12,7 +12,8 @@
 	<link rel="shortcut icon" href="{$basePath}/favicon.ico" type="image/x-icon">
 
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
-	<script type="text/javascript" src="{$basePath}/js/netteForms.js"></script>
+    <script type="text/javascript" src="{$basePath}/js/netteForms.js"></script>
+    <script type="text/javascript" src="{$basePath}/js/ajax.js"></script>
 	{block head}{/block}
 </head>
 
@@ -52,9 +53,11 @@
     </div>
 
     <div id="content">
-        <div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
+        {snippet flashMessages}
+            <div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
+        {/snippet}
 
-    {include #content}
+        {include #content}
     </div>
 
     <div id="footer">
