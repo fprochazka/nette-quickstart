@@ -21,13 +21,17 @@ common:
 
 		database:
 			default:
-				dsn: 'mysql:host=localhost;dbname=test'
+				dsn: 'mysql:host=localhost;dbname=quickstart'
 				user:
 				password:
 
 
 	services:
-		authenticator: Authenticator
+		authenticator: TaskList\Authenticator
+
+		tasks: TaskList\Tasks
+		users: TaskList\Users
+		taskLists: TaskList\Tasklists
 
 
 	factories:
@@ -36,3 +40,8 @@ common:
 production < common:
 
 development < common:
+	nette:
+		database:
+			default:
+				user: root
+				password: heslo

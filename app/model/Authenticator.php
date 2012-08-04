@@ -1,6 +1,10 @@
 <?php
 
+namespace TaskList;
+
+use Nette;
 use Nette\Security as NS;
+
 
 
 /**
@@ -8,14 +12,19 @@ use Nette\Security as NS;
  */
 class Authenticator extends Nette\Object implements NS\IAuthenticator
 {
-	/** @var Nette\Database\Connection */
-	private $database;
+	/**
+	 * @var Nette\Database\Connection
+	 */
+	private $users;
 
 
 
-	public function __construct(Nette\Database\Connection $database)
+	/**
+	 * @param \Nette\Database\Connection $users
+	 */
+	public function __construct(Nette\Database\Connection $users)
 	{
-		$this->database = $database;
+		$this->users = $users;
 	}
 
 
@@ -29,7 +38,7 @@ class Authenticator extends Nette\Object implements NS\IAuthenticator
 	public function authenticate(array $credentials)
 	{
 		list($username, $password) = $credentials;
-		$row = $this->database->table('users')->where('username', $username)->fetch();
+		$row = $this->users->table('users')->where('username', $username)->fetch();
 
 		if (!$row) {
 			throw new NS\AuthenticationException("User '$username' not found.", self::IDENTITY_NOT_FOUND);
