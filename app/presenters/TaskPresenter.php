@@ -9,7 +9,7 @@ use Nette\Application\UI\Form;
  *
  * @property callable $taskFormSubmitted
  */
-class TaskPresenter extends BasePresenter
+class TaskPresenter extends SecuredPresenter
 {
 
 	/**
@@ -37,10 +37,6 @@ class TaskPresenter extends BasePresenter
 	protected function startup()
 	{
 		parent::startup();
-
-		if (!$this->getUser()->isLoggedIn()) {
-			$this->redirect('Sign:in');
-		}
 
 		$this->taskLists = $this->context->taskLists;
 		$this->tasks = $this->context->tasks;

@@ -7,7 +7,7 @@ use Nette\Security as NS;
 /**
  * @property callable $passwordFormSubmitted
  */
-class UserPresenter extends BasePresenter
+class UserPresenter extends SecuredPresenter
 {
 
 	/**
@@ -25,10 +25,6 @@ class UserPresenter extends BasePresenter
 	protected function startup()
 	{
 		parent::startup();
-
-		if (!$this->getUser()->isLoggedIn()) {
-			$this->redirect('Sign:in');
-		}
 
 		$this->users = $this->context->users;
 		$this->authenticator = $this->context->authenticator;
