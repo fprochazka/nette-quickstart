@@ -37,6 +37,11 @@ class TaskPresenter extends BasePresenter
 	protected function startup()
 	{
 		parent::startup();
+
+		if (!$this->getUser()->isLoggedIn()) {
+			$this->redirect('Sign:in');
+		}
+
 		$this->taskLists = $this->context->taskLists;
 		$this->tasks = $this->context->tasks;
 		$this->users = $this->context->users;
@@ -73,7 +78,6 @@ class TaskPresenter extends BasePresenter
 
 
 	/**
-	 * @throws Nette\Application\BadRequestException
 	 * @return Nette\Application\UI\Form
 	 */
 	protected function createComponentTaskForm()
@@ -85,7 +89,8 @@ class TaskPresenter extends BasePresenter
 			->addRule(Form::FILLED, 'Je nutné zadat text úkolu.');
 		$form->addSelect('userId', 'Pro:', $userPairs)
 			->setPrompt('- Vyberte -')
-			->addRule(Form::FILLED, 'Je nutné vybrat, komu je úkol přiřazen.');
+			->addRule(Form::FILLED, 'Je nutné vybrat, komu je úkol přiřazen.')
+			->setDefaultValue($this->getUser()->getId());
 
 		$form->addSubmit('create', 'Vytvořit');
 		$form->onSuccess[] = $this->taskFormSubmitted;

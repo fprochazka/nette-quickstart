@@ -30,6 +30,20 @@ class Tasks extends Table
 
 
 	/**
+	 * @param int $userId
+	 *
+	 * @return \Nette\Database\Table\Selection
+	 */
+	public function findIncompleteByUser($userId)
+	{
+		return $this->findIncomplete()->where(array(
+			'user_id' => $userId
+		));
+	}
+
+
+
+	/**
 	 * @param int $taskListId
 	 * @param string $task
 	 * @param int $assignedUser

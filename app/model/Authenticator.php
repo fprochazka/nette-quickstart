@@ -39,30 +39,35 @@ class Authenticator extends Nette\Object implements NS\IAuthenticator
 	public function authenticate(array $credentials)
 	{
 		list($username, $password) = $credentials;
-		$row = $this->users->table('users')->where('username', $username)->fetch();
+		$row = $this->users->findByName($username);
 
 		if (!$row) {
 			throw new NS\AuthenticationException("User '$username' not found.", self::IDENTITY_NOT_FOUND);
 		}
 
-		if ($row->password !== $this->calculateHash($password)) {
+		if ($row->password !== self::calculateHash($password, $row->password)) {
 			throw new NS\AuthenticationException("Invalid password.", self::INVALID_CREDENTIAL);
 		}
 
 		unset($row->password);
-		return new NS\Identity($row->id, $row->role, $row->toArray());
+		return new NS\Identity($row->id, NULL, $row->toArray());
 	}
 
 
 
 	/**
 	 * Computes salted password hash.
-	 * @param  string
+	 * @param string $password
+	 * @param string $salt
 	 * @return string
 	 */
-	public function calculateHash($password)
+	public static function calculateHash($password, $salt = null)
 	{
-		return md5($password . str_repeat('*random salt*', 10));
+		if ($salt === null) {
+			$salt = '$2a$07$' . Nette\Utils\Strings::random(32) . '$';
+		}
+
+		return crypt($password, $salt);
 	}
 
 }

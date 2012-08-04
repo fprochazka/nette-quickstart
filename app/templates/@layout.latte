@@ -19,29 +19,36 @@
 <body>
 <div id="header">
     <div id="header-inner">
-        <div class="title"><a href="{link Homepage:}">Úkolníček</a></div>
+        <div class="title"><a n:href="Homepage:">Úkolníček</a></div>
+
+        <div class="user" n:if="$user->isLoggedIn()">
+            <span class="icon user">{$user->getIdentity()->name}</span> |
+            <a n:href="User:password">Změna hesla</a> |
+            <a n:href="signOut!">Odhlásit se</a>
+        </div>
     </div>
 </div>
 
 <div id="container">
     <div id="sidebar">
-        <div class="task-lists">
-            <ul>
-                <li n:foreach="$taskLists as $list"><a n:href="Task: $list->id">{$list->title}</a></li>
-            </ul>
-        </div>
+        {if $user->isLoggedIn()}
+            <div class="title">Seznamy úkolů</div>
+            <div class="task-lists">
+                <ul>
+                    <li n:foreach="$taskLists as $list"><a n:href="Task: $list->id">{$list->title}</a></li>
+                </ul>
+            </div>
 
-        <fieldset>
-            <legend>Nový seznam</legend>
-            {form newTasklistForm}
-                <div class="new-tasklist-form">
-                    {control $form errors}
-
-                {input title}
+            <fieldset>
+                <legend>Nový seznam</legend>
+                {form newTasklistForm}
+                    <div class="new-tasklist-form">
+                        {input title}
                 {input create}
-                </div>
-            {/form}
-        </fieldset>
+                    </div>
+                {/form}
+            </fieldset>
+        {/if}
     </div>
 
     <div id="content">

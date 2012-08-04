@@ -1,63 +1,53 @@
 <?php
 
-use Nette\Application\UI,
-	Nette\Security as NS;
+use Nette\Application\UI\Form;
+use Nette\Security as NS;
 
 
 /**
  * Sign in/out presenters.
+ *
+ * @property callable $signInFormSubmitted
  */
 class SignPresenter extends BasePresenter
 {
 
-
 	/**
-	 * Sign in form component factory.
 	 * @return Nette\Application\UI\Form
 	 */
 	protected function createComponentSignInForm()
 	{
-		$form = new UI\Form;
-		$form->addText('username', 'Username:')
-			->setRequired('Please provide a username.');
+		$form = new Form();
+		$form->addText('username', 'Uživatelské jméno:', 30, 20);
+		$form->addPassword('password', 'Heslo:', 30);
+		$form->addCheckbox('persistent', 'Pamatovat si mě na tomto počítači');
 
-		$form->addPassword('password', 'Password:')
-			->setRequired('Please provide a password.');
-
-		$form->addCheckbox('remember', 'Remember me on this computer');
-
-		$form->addSubmit('send', 'Sign in');
-
+		$form->addSubmit('login', 'Přihlásit se');
 		$form->onSuccess[] = $this->signInFormSubmitted;
+
 		return $form;
 	}
 
 
 
-	public function signInFormSubmitted($form)
+	/**
+	 * @param Nette\Application\UI\Form $form
+	 */
+	public function signInFormSubmitted(Form $form)
 	{
 		try {
+			$user = $this->getUser();
 			$values = $form->getValues();
-			if ($values->remember) {
-				$this->getUser()->setExpiration('+ 14 days', FALSE);
-			} else {
-				$this->getUser()->setExpiration('+ 20 minutes', TRUE);
+			if ($values->persistent) {
+				$user->setExpiration('+30 days', FALSE);
 			}
-			$this->getUser()->login($values->username, $values->password);
+			$user->login($values->username, $values->password);
+			$this->flashMessage('Přihlášení bylo úspěšné.', 'success');
 			$this->redirect('Homepage:');
 
 		} catch (NS\AuthenticationException $e) {
-			$form->addError($e->getMessage());
+			$form->addError('Neplatné uživatelské jméno nebo heslo.');
 		}
-	}
-
-
-
-	public function actionOut()
-	{
-		$this->getUser()->logout();
-		$this->flashMessage('You have been signed out.');
-		$this->redirect('in');
 	}
 
 }

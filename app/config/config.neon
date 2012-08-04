@@ -17,7 +17,7 @@ common:
 			errorPresenter: Error
 
 		session:
-			expiration: 14 days
+			expiration: +30 days
 
 		database:
 			default:
