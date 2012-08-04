@@ -1,7 +1,13 @@
 <?php
 
+use Nette\Application\UI\Form;
+
+
+
 /**
  * Base presenter for all application presenters.
+ *
+ * @property callable $newTasklistFormSubmitted
  */
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
@@ -24,6 +30,29 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	public function beforeRender()
 	{
 		$this->template->taskLists = $this->taskLists->findAll()->order('title ASC');
+	}
+
+
+
+	protected function createComponentNewTasklistForm()
+	{
+		$form = new Form();
+		$form->addText('title', 'Název:', 15, 50)
+			->addRule(Form::FILLED, 'Musíte zadat název seznamu úkolů.');
+
+		$form->addSubmit('create', 'Vytvořit');
+		$form->onSuccess[] = $this->newTasklistFormSubmitted;
+
+		return $form;
+	}
+
+
+
+	public function newTasklistFormSubmitted(Form $form)
+	{
+		$tasklist = $this->taskLists->createList($form->values->title);
+		$this->flashMessage('Seznam úkolů založen.', 'success');
+		$this->redirect('Task:default', $tasklist->id);
 	}
 
 }

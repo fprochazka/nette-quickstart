@@ -29,4 +29,17 @@ class TaskLists extends Table
 		return $taskList->related('task')->order('created');
 	}
 
+
+
+	/**
+	 * @param string $title
+	 * @return \Nette\Database\Table\ActiveRow
+	 */
+	public function createList($title)
+	{
+		return $this->getTable()->insert(array(
+			'title' => $title
+		));
+	}
+
 }

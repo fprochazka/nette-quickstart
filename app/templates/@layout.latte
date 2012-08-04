@@ -26,10 +26,22 @@
 <div id="container">
     <div id="sidebar">
         <div class="task-lists">
-            <ul n:inner-foreach="$taskLists as $list">
-                <li><a n:href="Task: $list->id">{$list->title}</a></li>
+            <ul>
+                <li n:foreach="$taskLists as $list"><a n:href="Task: $list->id">{$list->title}</a></li>
             </ul>
         </div>
+
+        <fieldset>
+            <legend>Nový seznam</legend>
+            {form newTasklistForm}
+                <div class="new-tasklist-form">
+                    {control $form errors}
+
+                {input title}
+                {input create}
+                </div>
+            {/form}
+        </fieldset>
     </div>
 
     <div id="content">
