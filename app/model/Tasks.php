@@ -46,4 +46,14 @@ class Tasks extends Table
 		));
 	}
 
+
+
+	/**
+	 * @param int $id
+	 */
+	public function markDone($id)
+	{
+		$this->findOneBy(array('id' => $id))->update(array('done' => 1));
+	}
+
 }

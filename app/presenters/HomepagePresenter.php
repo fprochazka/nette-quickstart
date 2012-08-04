@@ -22,9 +22,9 @@ class HomepagePresenter extends BasePresenter
 
 
 
-	public function renderDefault()
+	public function createComponentIncompleteTasks()
 	{
-		$this->template->tasks = $this->tasks->findIncomplete();
+		return new TaskList\TaskListControl($this->tasks->findIncomplete(), $this->tasks);
 	}
 
 }

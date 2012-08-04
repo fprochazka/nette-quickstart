@@ -57,7 +57,17 @@ class TaskPresenter extends BasePresenter
 	public function renderDefault()
 	{
 		$this->template->taskList = $this->list;
-		$this->template->tasks = $this->taskLists->tasksOf($this->list);
+	}
+
+
+
+	protected function createComponentTaskList()
+	{
+		if ($this->list === NULL) {
+			$this->error('Wrong action');
+		}
+
+		return new TaskList\TaskListControl($this->taskLists->tasksOf($this->list), $this->tasks);
 	}
 
 
