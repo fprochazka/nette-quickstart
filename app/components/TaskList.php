@@ -37,7 +37,7 @@ class TaskListControl extends Nette\Application\UI\Control
 	 */
 	public function __construct(Nette\Database\Table\Selection $selected, Tasks $tasks)
 	{
-		parent::__construct(); // vždy je potřeba volat rodičovský konstruktor
+		parent::__construct(); // we have to call constructor from parent class
 		$this->selected = $selected;
 		$this->tasks = $tasks;
 	}

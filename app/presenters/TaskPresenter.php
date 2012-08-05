@@ -5,7 +5,7 @@ use Nette\Application\UI\Form;
 
 
 /**
- * Presenter, který zajišťuje výpis seznamů úkolů.
+ * Presenter that ensures the listing of task lists.
  *
  * @property callable $taskFormSubmitted
  */
