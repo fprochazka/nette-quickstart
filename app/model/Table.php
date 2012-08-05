@@ -7,7 +7,7 @@ use Nette;
 
 
 /**
- * Reprezentuje repozitář pro databázovou tabulku
+ * Repository pattern class for database table
  */
 abstract class Table extends Nette\Object
 {
@@ -41,7 +41,7 @@ abstract class Table extends Nette\Object
 
 
 	/**
-	 * Vrací celou tabulku z databáze
+	 * Gets whole table from database
 	 * @return \Nette\Database\Table\Selection
 	 */
 	protected function getTable()
@@ -52,7 +52,7 @@ abstract class Table extends Nette\Object
 
 
 	/**
-	 * Vrací všechny záznamy z databáze
+	 * Returns all records
 	 * @return \Nette\Database\Table\Selection
 	 */
 	public function findAll()
@@ -63,8 +63,8 @@ abstract class Table extends Nette\Object
 
 
 	/**
-	 * Vrací vyfiltrované záznamy na základě vstupního pole
-	 * (pole array('name' => 'David') se převede na část SQL dotazu WHERE name = 'David')
+	 * Returns all records matching criteria specified in $by
+	 * (array('name' => 'David') gets converted to SQL query WHERE name = 'David')
 	 *
 	 * @param array $by
 	 *
@@ -78,7 +78,7 @@ abstract class Table extends Nette\Object
 
 
 	/**
-	 * To samé jako findBy akorát vrací vždy jen jeden záznam
+	 * Returns first record matching criteria specified in $by
 	 *
 	 * @param array $by
 	 *
@@ -92,7 +92,7 @@ abstract class Table extends Nette\Object
 
 
 	/**
-	 * Vrací záznam s daným primárním klíčem
+	 * Returns record with specified primary key
 	 *
 	 * @param int $id
 	 *
